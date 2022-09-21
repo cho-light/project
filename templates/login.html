@@ -18,6 +18,7 @@
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Jua&family=Poppins&family=Roboto+Condensed&display=swap"
           rel="stylesheet">
@@ -29,41 +30,55 @@
     <style>
 
         body {
-            background-color: RGBA(232, 52, 78, 0.2);
             min-height: 100vh;
         }
 
         .section {
-            padding: 1rem 1.5rem;
-            max-width: 750px;
-            margin: auto;
+            background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url(/static/background.png);
+            background-size: cover;
+
+            height: 100vh;
+            max-width: 100%;
+            width: 100%;
+
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .title {
-            font-weight: 800;
-            font-size: 5rem;
+        header {
+            color: #8B5927;
+            font-size: 50px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
             font-family: 'Jua', sans-serif;
         }
-
-        .subtitle {
-            font-size: 2rem;
-            font-family: 'Poppins', sans-serif;
+        .material-symbols-outlined {
+            font-size: 35px;
         }
-
         .is-sparta {
             color: #e8344e !important;
         }
 
         .button.is-sparta {
-            background-color: #e8344e;
+            background-color: #D68642;
             border-color: transparent;
             color: #fff !important;
+            transition: all 0.4s ease;
         }
-
+        .button.is-sparta:hover {
+            background-color: #C2722E;
+        }
         .button.is-sparta.is-outlined {
             background-color: transparent;
-            border-color: #e8344e;
-            color: #e8344e !important;
+            border-color: #8B5927;
+            color: #8B5927 !important;
+            transition: all 0.4s ease;
+        }
+        .button.is-sparta.is-outlined:hover  {
+            background-color: #FFEFD5;
         }
 
         .help {
@@ -86,6 +101,8 @@
             } else {
                 $("#help-id-login").text("")
             }
+
+
 
             if (password == "") {
                 $("#help-password-login").text("비밀번호를 입력해주세요.")
@@ -117,7 +134,6 @@
             let password = $("#input-password").val()
             let password2 = $("#input-password2").val()
             console.log(username, password, password2)
-
 
             if ($("#help-id").hasClass("is-danger")) {
                 alert("아이디를 다시 확인해주세요.")
@@ -165,6 +181,8 @@
         }
 
         function toggle_sign_up() {
+            $("#help-id-login").empty()
+
             $("#sign-up-box").toggleClass("is-hidden")
             $("#div-sign-in-or-up").toggleClass("is-hidden")
             $("#btn-check-dup").toggleClass("is-hidden")
@@ -172,6 +190,7 @@
             $("#help-password").toggleClass("is-hidden")
             $("#help-password2").toggleClass("is-hidden")
         }
+
 
         function is_nickname(asValue) {
             var regExp = /^(?=.*[a-zA-Z])[-a-zA-Z0-9_.]{2,10}$/;
@@ -219,16 +238,12 @@
 
 </head>
 <body>
-<section class="hero is-white">
-    <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
-        <h1 class="title is-sparta">북클립</h1>
-        <h3 class="subtitle is-sparta">세상의 모든 책들을</h3>
-    </div>
-</section>
-
 <section class="section">
     <div class="container">
         <div class="box" style="max-width: 480px;margin:auto">
+            <header>
+                <h1><span class="material-symbols-outlined">auto_stories</span>북클립</h1>
+            </header>
             <article class="media">
                 <div class="media-content">
                     <div class="content">

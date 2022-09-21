@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <!-- Webpage Title -->
+    <title>Main | BookClip</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    <
+
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            font-family: 'Jua', sans-serif;
+        }
+
+        .mytitle {
+            width: 100%;
+            height: 300px;
+
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://blog.kakaocdn.net/dn/cDJLVB/btrMxCdMk1b/PV3diTN0Fa7ACkU1OkVkh0/img.jpg');
+            background-position: center;
+            background-size: cover;
+
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .mypost {
+            width: 95%;
+            max-width: 500px;
+            margin: 20px auto 0px auto;
+            padding: 20px;
+            box-shadow: 0px 0px 3px 0px gray;
+
+            display: none;
+        }
+
+        .mybtns {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+
+            margin-top: 20px;
+        }
+
+        .mybtns > button {
+            margin-right: 10px;
+        }
+
+    </style>
+    <script>
+        $(document).ready(function () {
+            bsCustomFileInput.init()
+            listing()
+        })
+
+        function listing() {
+            $.ajax({
+                type: "GET",
+                url: "/api/posts",
+                data: {},
+                success: function (response) {
+                    let posts = response['all_post']
+                    for (let i = 0; i < posts.length; i++) {
+                        let title = posts[i]['title']
+                        let line = posts[i]['line']
+                        let comment = posts[i]['comment']
+                        let file = posts[i]['file']
+
+
+                        let temp_html = `<div class="row row-cols-1 row-cols-md-4 g-4">
+                                              <div class="col">
+                                                <div class="card">
+                                                  <img src="../static/${file}" class="card-img-top">
+                                                  <div class="card-body">
+                                                    <h5 class="card-title">${title}</h5>
+                                                    <p class="card-text">${line}</p>
+                                                    <p class="card-text">${comment}</p>
+                                                    </div>
+                                                </div>
+                                          </div>`
+                        $('#cardbox').append(temp_html)
+                    }
+                }
+            })
+        }
+
+        function posting() {
+            let title = $('#title').val()
+            let line = $("#line").val()
+            let comment = $("#comment").val()
+
+            let file = $('#file')[0].files[0]
+            let form_data = new FormData()
+
+            form_data.append("file_give", file)
+            form_data.append("title_give", title)
+            form_data.append("line_give", line)
+            form_data.append("comment_give", comment)
+
+            $.ajax({
+                type: "POST",
+                url: "/api/posts",
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    alert(response["msg"])
+                    window.location.reload()
+                }
+            });
+        }
+
+        function open_box() {
+            $('#post-box').show()
+        }
+
+        function close_box() {
+            $('#post-box').hide()
+        }
+    </script>
+</head>
+
+<body>
+<div class="mytitle">
+    <h1>북클립</h1>
+    <div>
+        <button type="button" class="btn btn-outline-light">로그아웃</button>
+    </div>
+
+</div>
+<div class="comment">
+    <div class="container">
+        <div class="text-center">
+            <button type="button" class="btn btn-outline-dark">베스트 셀러</button>
+            <button onclick="open_box()" type="button" class="btn btn-outline-dark">감상평 기록</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="mypost" id="post-box">
+
+    <div class="mb-3">
+        <label for="file" class="form-label">책 사진</label>
+        <input class="form-control" type="file" id="file">
+    </div>
+    <div class="form-floating mb-3">
+        <label>책 제목</label>
+        <input type="email" class="form-control" id="title" placeholder="">
+    </div>
+    <div class="form-floating mb-3">
+        <label>마음에 드는 글귀</label>
+        <input type="email" class="form-control" id="line" placeholder="">
+    </div>
+    <div class="form-floating mb-3">
+        <label>감상평</label>
+        <input type="email" class="form-control" id="comment" placeholder="">
+    </div>
+    <div class="mybtns">
+        <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
+        <button onclick="close_box()" type="button" class="btn btn-outline-dark">닫기</button>
+    </div>
+</div>
+<div class="card-columns" id=cardbox>
+
+</div>
+</body>
+
+</html>
