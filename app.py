@@ -189,6 +189,40 @@ def update_like():
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 
+@app.route('/api/posts', methods=['GET'])
+def show_post():
+    posts = list(db.post.find({}, {'_id': False}))
+
+    return jsonify({'all_post': posts})
+
+@app.route('/api/posts', methods=['POST'])
+def save_post():
+    title_receive = request.form['title_give']
+    line_receive = request.form['line_give']
+    comment_receive = request.form['comment_give']
+
+    file = request.files["file_give"]
+
+    extension = file.filename.split('.')[-1]
+
+    today = datetime.now()
+    mytime = today.strftime("%Y-%m-%d-%H-%m-%S")
+
+    filename = f'file-{mytime}'
+
+    save_to = f'static/{filename}.{extension}'
+    file.save(save_to)
+
+    doc = {
+        'title' : title_receive,
+        'line' : line_receive,
+        'comment' : comment_receive,
+        'file' : f'{filename}.{extension}'
+    }
+
+    db.post.insert_one(doc)
+
+    return jsonify({'msg': '저장 완료'})
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)
