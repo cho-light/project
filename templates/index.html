@@ -10,6 +10,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -46,6 +49,7 @@
         h1 {
             font-size: 50px;
         }
+
         h1:hover {
             cursor: pointer;
         }
@@ -107,10 +111,6 @@
             padding: 10px;
         }
 
-        .text-center > button {
-        }
-
-
 
         .mypost {
             width: 95%;
@@ -133,6 +133,19 @@
 
         .mybtns > button {
             margin-right: 10px;
+        }
+
+        .mycards {
+            margin: 20px auto 0px auto;
+            width: 95%;
+            max-width: 1200px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 1rem;
+            grid-auto-rows: minmax(200px, auto);
         }
 
     </style>
@@ -161,18 +174,17 @@
                         let file = posts[i]['file']
 
 
-                        let temp_html = `<div class="row row-cols-1 row-cols-md-4 g-4">
-                                              <div class="col">
-                                                <div class="card">
+                        let temp_html = `<div class="col">
+                                                <div class="card h-100">
                                                   <img src="../static/${file}" class="card-img-top">
                                                   <div class="card-body">
                                                     <h5 class="card-title">${title}</h5>
                                                     <p class="card-text">${line}</p>
                                                     <p class="card-text">${comment}</p>
-                                                    </div>
+                                                  </div>
                                                 </div>
-                                          </div>`
-                        $('#cardbox').append(temp_html)
+                                         </div>`
+                        $('#card-box').append(temp_html)
                     }
                 }
             })
@@ -231,7 +243,8 @@
     <form action="">
         <div class="mytitle">
             <div class="header">
-                <h1 onclick="window.location.reload()"><span class="material-symbols-outlined">auto_stories</span>북 클 립</h1>
+                <h1 onclick="window.location.reload()"><span class="material-symbols-outlined">auto_stories</span>북 클 립
+                </h1>
             </div>
             <div class="comment">
                 <div class="container">
@@ -269,9 +282,9 @@
             <label>마음에 드는 글귀</label>
             <input type="email" class="form-control" id="line" placeholder="">
         </div>
-        <div class="form-floating mb-3">
-            <label>감상평</label>
-            <input type="email" class="form-control" id="comment" placeholder="">
+        <div class="form-floating">
+            <label for="floatingTextarea">감상평</label>
+            <textarea class="form-control" placeholder="" id="comment"></textarea>
         </div>
         <div class="mybtns">
             <button onclick="posting()" type="button" class="btn btn-dark">기록하기</button>
@@ -279,10 +292,17 @@
         </div>
     </div>
 
-    <div class="card-columns" id="cardbox"></div>
 </section>
+
+<div class="mycards">
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="card-box">
+    </div>
+</div>
 
 
 </body>
 
 </html>
+
+
+
